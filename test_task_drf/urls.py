@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from network_users.views import UserAPIView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/all_users', UserAPIView.as_view())
 ]
