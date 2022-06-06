@@ -5,6 +5,11 @@ from .models import User
 from .serializers import UserSerializer
 
 
-class UserAPIView(generics.ListAPIView):
+class UserAPIList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserAPICreate(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
