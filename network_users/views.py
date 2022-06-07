@@ -43,3 +43,11 @@ class GroupAPIUpdate(generics.RetrieveUpdateAPIView):
 class GroupAPIDelete(generics.RetrieveDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class GetUsersByGroupId(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        group_id = self.kwargs['pk']
+        return User.objects.filter(group_id=group_id)

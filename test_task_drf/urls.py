@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from network_users.views import (
+    GetUsersByGroupId,
     GroupAPIList, GroupAPICreate, GroupAPIUpdate, GroupAPIDelete,
     UserAPICreate, UserAPIDelete, UserAPIList, UserAPIUpdate)
 
@@ -30,4 +31,5 @@ urlpatterns = [
     path('api/v1/add_new_group', GroupAPICreate.as_view()),
     path('api/v1/update_group/<int:pk>/', GroupAPIUpdate.as_view()),
     path('api/v1/delete_group/<int:pk>/', GroupAPIDelete.as_view()),
+    path('api/v1/get_users_by_group/<int:pk>/', GetUsersByGroupId.as_view()),
 ]
