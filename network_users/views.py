@@ -11,10 +11,35 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def partial_update(self, request, *args, **kwargs):
+        user = self.get_object()
+        data = request.data
+
+        user.login = data.get('login', user.login)
+        user.sex = data.get('sex', user.sex)
+        user.birth_date = data.get('birth_date', user.birth_date)
+
+        user.save()
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data)
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        group = self.get_object()
+        data = request.data
+
+        group.name = data.get('name', group.name)
+        group.public = data.get('public', group.public)
+
+        group.save()
+
+        serializer = GroupSerializer(group)
+        return Response(serializer.data)
 
 
 class MembersViewSet(viewsets.ModelViewSet):
