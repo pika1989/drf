@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from network_users.views import UserAPICreate, UserAPIDelete, UserAPIList, UserAPIUpdate
+from network_users.views import (
+    GroupAPIList, GroupAPICreate, GroupAPIUpdate, GroupAPIDelete,
+    UserAPICreate, UserAPIDelete, UserAPIList, UserAPIUpdate)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +26,8 @@ urlpatterns = [
     path('api/v1/add_new_user', UserAPICreate.as_view()),
     path('api/v1/update_user/<int:pk>/', UserAPIUpdate.as_view()),
     path('api/v1/delete_user/<int:pk>/', UserAPIDelete.as_view()),
+    path('api/v1/group_list', GroupAPIList.as_view()),
+    path('api/v1/add_new_group', GroupAPICreate.as_view()),
+    path('api/v1/update_group/<int:pk>/', GroupAPIUpdate.as_view()),
+    path('api/v1/delete_group/<int:pk>/', GroupAPIDelete.as_view()),
 ]
