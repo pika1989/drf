@@ -3,17 +3,16 @@ from django.db import models
 
 class User(models.Model):
 
-    MALE = 'm'
-    FEMALE = 'f'
+    MALE = 'male'
+    FEMALE = 'female'
     SEX_CHOICES = [
         (MALE, 'male'),
         (FEMALE, 'female'),
     ]
 
     login = models.CharField(max_length=16, unique=True)
-    sex = models.CharField(max_length=1, choices=SEX_CHOICES)
+    sex = models.CharField(max_length=6, choices=SEX_CHOICES)
     birth_date = models.DateField()
-    group = models.ForeignKey('Group', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.login
@@ -25,3 +24,8 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Members(models.Model):
+    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    group_id = models.ForeignKey('Group', on_delete=models.CASCADE)

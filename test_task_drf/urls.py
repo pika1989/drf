@@ -17,19 +17,20 @@ from django.contrib import admin
 from django.urls import path
 
 from network_users.views import (
-    GetUsersByGroupId,
-    GroupAPIList, GroupAPICreate, GroupAPIUpdate, GroupAPIDelete,
-    UserAPICreate, UserAPIDelete, UserAPIList, UserAPIUpdate)
+    GroupViewSet, UsersInGroupViewSet, UserViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/all_users', UserAPIList.as_view()),
-    path('api/v1/add_new_user', UserAPICreate.as_view()),
-    path('api/v1/update_user/<int:pk>/', UserAPIUpdate.as_view()),
-    path('api/v1/delete_user/<int:pk>/', UserAPIDelete.as_view()),
-    path('api/v1/group_list', GroupAPIList.as_view()),
-    path('api/v1/add_new_group', GroupAPICreate.as_view()),
-    path('api/v1/update_group/<int:pk>/', GroupAPIUpdate.as_view()),
-    path('api/v1/delete_group/<int:pk>/', GroupAPIDelete.as_view()),
-    path('api/v1/get_users_by_group/<int:pk>/', GetUsersByGroupId.as_view()),
+    path('api/v1/user/', UserViewSet.as_view({'get': 'list', 'post': 'create'})),
+    path('api/v1/user/<int:pk>/', UserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'})),
+    path('api/v1/group/', GroupViewSet.as_view({'get': 'list', 'post': 'create'})),
+    path('api/v1/group/<int:pk>/', GroupViewSet.as_view({'put': 'partial_update', 'delete': 'destroy'})),
+    path('api/v1/group/<int:group_pk>/users/', UsersInGroupViewSet.as_view({'get': 'list', 'post': 'update'})),
+    path('api/v1/group/<int:group_pk>/users/<int:user_pk>',
+         UsersInGroupViewSet.as_view({'get': 'list', 'delete': 'destroy'})),
+    #  path('api/v1/user', GET - get all users, POST - add user,
+    #  path('api/v1/user/{id}' - PUT - update, PATCH - partial update, DELETE - delete user
+    #  path('api/v1/group/<int:pk>/users', # GET - list users in group, POST - add user, DELETE - remove user
+    #  AddUserToGroup.as_view()),
 ]
