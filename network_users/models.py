@@ -27,5 +27,5 @@ class Group(models.Model):
 
 
 class Members(models.Model):
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    group_id = models.ForeignKey('Group', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    group = models.ForeignKey('Group', on_delete=models.CASCADE)
