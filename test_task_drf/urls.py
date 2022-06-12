@@ -14,21 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from network_users.views import (
     GroupViewSet, MembersViewSet, UserViewSet)
+from test_task_drf.router import UserGroupRouter
+
+
+router = UserGroupRouter(trailing_slash=False)
+router.register(r'user', UserViewSet, basename='user')
+router.register(r'group', GroupViewSet, basename='group')
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/user/', UserViewSet.as_view({'get': 'list', 'post': 'create'})),
-    path('api/v1/user/<int:pk>/',
-         UserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'})),
-    path('api/v1/group/', GroupViewSet.as_view({'get': 'list', 'post': 'create'})),
-    path('api/v1/group/<int:pk>/',
-         GroupViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'})),
-    path('api/v1/group/<int:group_pk>/users/', MembersViewSet.as_view({'get': 'list', 'post': 'create'})),
+    path('admin', admin.site.urls),
+    path('api/v1/', include(router.urls)),
+    path('api/v1/group/<int:group_pk>/users', MembersViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('api/v1/group/<int:group_pk>/users/<int:user_pk>',
          MembersViewSet.as_view({'get': 'list', 'delete': 'destroy'})),
 ]
