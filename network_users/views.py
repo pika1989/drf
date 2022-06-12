@@ -1,7 +1,4 @@
-from django.shortcuts import render
-
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets
 
@@ -65,11 +62,14 @@ class MembersViewSet(viewsets.ModelViewSet):
         return User.objects.filter(id__in=users_id)
 
     def create(self, request, *args, **kwargs):
-        user_id = request.data['user']
-        group_id = self.kwargs['group_pk']
-        Members.objects.create(user_id=user_id, group_id=group_id)
+        try:
+            user_id = request.data['user']
+            group_id = self.kwargs['group_pk']
+            Members.objects.create(user_id=user_id, group_id=group_id)
 
-        return Response({'success': 200}, status=status.HTTP_200_OK)
+            return Response({'success': 200}, status=status.HTTP_200_OK)
+        except KeyError:
+            return Response({'Bad request': 400})
 
     def destroy(self, request, *args, **kwargs):
         user_id = self.kwargs['user_pk']
