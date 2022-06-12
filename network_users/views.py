@@ -1,8 +1,11 @@
 from django.shortcuts import render
+
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets
 
+from .authentication import CustomAuthentication
 from .models import Group, Members, User
 from .serializers import GroupSerializer, MembersSerializer, UserSerializer
 
@@ -10,6 +13,7 @@ from .serializers import GroupSerializer, MembersSerializer, UserSerializer
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    authentication_classes = (CustomAuthentication,)
 
     def partial_update(self, request, *args, **kwargs):
         user = self.get_object()
