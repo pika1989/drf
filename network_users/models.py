@@ -1,5 +1,7 @@
 from django.db import models
 
+from .validators import NameValidator
+
 
 class User(models.Model):
 
@@ -10,7 +12,7 @@ class User(models.Model):
         (FEMALE, 'female'),
     ]
 
-    login = models.CharField(max_length=16, unique=True)
+    login = models.CharField(max_length=16, unique=True, validators=[NameValidator()])
     sex = models.CharField(max_length=6, choices=SEX_CHOICES)
     birth_date = models.DateField()
 
@@ -19,7 +21,7 @@ class User(models.Model):
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=16, unique=True)
+    name = models.CharField(max_length=16, unique=True, validators=[NameValidator()])
     public = models.BooleanField(default=True)
 
     def __str__(self):
