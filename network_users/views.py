@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -65,11 +67,16 @@ class MembersViewSet(viewsets.ModelViewSet):
         try:
             user_id = request.data['user']
             group_id = self.kwargs['group_pk']
+            users_in_group = [member.user_id for member in Members.objects.filter(group_id=group_id)]
+
+            if user_id in users_in_group:
+                return Response({'User is already in this group': 409}, status=status.HTTP_409_CONFLICT)
+
             Members.objects.create(user_id=user_id, group_id=group_id)
 
             return Response({'success': 200}, status=status.HTTP_200_OK)
-        except KeyError:
-            return Response({'Bad request': 400})
+        except (KeyError, IntegrityError):
+            return Response({'Bad request': 400}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         user_id = self.kwargs['user_pk']

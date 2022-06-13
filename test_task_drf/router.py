@@ -1,20 +1,20 @@
-from rest_framework.routers import Route, SimpleRouter
+from rest_framework.routers import Route, DefaultRouter
 
 
-class UserGroupRouter(SimpleRouter):
+class UserGroupRouter(DefaultRouter):
     """
     A router for UserViewSet and GroupViewSet.
     """
     routes = [
         Route(
-            url=r'^{prefix}$',
+            url=r'^{prefix}/?$',
             mapping={'get': 'list', 'post': 'create'},
             name='{basename}-list',
             detail=False,
             initkwargs={'suffix': 'List'}
         ),
         Route(
-            url=r'^{prefix}/{lookup}$',
+            url=r'^{prefix}/{lookup}/?$',
             mapping={'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'},
             name='{basename}-detail',
             detail=True,
